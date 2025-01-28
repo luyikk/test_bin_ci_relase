@@ -24,12 +24,23 @@ jobs:
           cp target/release/main release/
           tar -czvf release/main-ubuntu18.tar.gz -C release main
 
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
       - name: Upload to GitHub Release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-            upload_url: ${{ github.event.release.upload_url }}
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
             asset_path: ./release/main-ubuntu18.tar.gz
             asset_name: main-ubuntu18.tar.gz
             asset_content_type: application/gzip
