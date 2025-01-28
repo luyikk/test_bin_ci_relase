@@ -27,7 +27,7 @@ jobs:
       - name: Upload Binary to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: release/main
+          files: release/main-ubuntu18.tar.gz
 #      - name: Create Release
 #        id: create_release
 #        uses: actions/create-release@v1
