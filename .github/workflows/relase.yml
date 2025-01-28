@@ -17,9 +17,7 @@ jobs:
             persist-credentials: 'false'
       - name: Build Rust project in Docker
         run: |
-            docker run --rm -v "$(pwd)":/workspace -w /workspace ${{ matrix.os }} /bin/bash -c "              
-              cargo build --release
-            "
+            docker run --rm -v "$(pwd)":/workspace -w /workspace ${{ matrix.os }} /bin/bash -c " cargo build --release"
       - name: Package binary
         run: |
           mkdir -p release
