@@ -24,9 +24,10 @@ jobs:
           cp target/release/main release/
           tar -czvf release/main-ubuntu18.tar.gz -C release main
 
-        
       - name: Upload to GitHub Release
         uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             upload_url: ${{ github.event.release.upload_url }}
             asset_path: ./release/main-ubuntu18.tar.gz
