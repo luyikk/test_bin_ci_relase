@@ -9,7 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ luyikk/rust1804 ]
+        system:
+          - image: luyikk/rust1804
+            os: ubuntu1804
+          - image: luyikk/rust_ubuntu
+            os: ubuntu2204
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -17,17 +21,17 @@ jobs:
             persist-credentials: 'false'
       - name: Build Rust project in Docker
         run: |
-            docker run --rm -v "$(pwd)":/workspace -w /workspace ${{ matrix.os }} /bin/bash -c "cargo build --release"
+            docker run --rm -v "$(pwd)":/workspace -w /workspace ${{ matrix.system.image }} /bin/bash -c "cargo build --release"
       - name: Package binary
         run: |
           mkdir -p release
           cp target/release/main release/
-          tar -czvf release/main-ubuntu18.tar.gz -C release main
+          tar -czvf release/main-${{ matrix.system.os }}.tar.gz -C release main
 
       - name: Upload Binary to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: release/main-ubuntu18.tar.gz
+          files: release/main-${{ matrix.system.os }}.tar.gz
 #      - name: Create Release
 #        id: create_release
 #        uses: actions/create-release@v1
