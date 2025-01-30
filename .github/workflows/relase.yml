@@ -17,6 +17,14 @@ jobs:
             os: ubuntu2204
             bin: main
     steps:
+      - name: Get version from tag using github-script
+        id: get_version
+        uses: actions/github-script@v3
+        with:
+          script: |
+            const tag = process.env.GITHUB_REF.split('/').pop();
+            core.setOutput('version', tag.replace('v', ''));
+
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Build Rust project in Docker
@@ -27,9 +35,9 @@ jobs:
           mkdir -p release
           VERSION=${GITHUB_REF#refs/tags/}
           cp target/release/${{ matrix.system.bin }} release/
-          tar -czvf release/${{ matrix.system.bin }}-${{ matrix.system.os }}-${VERSION}.tar.gz -C release ${{ matrix.system.bin }}
+          tar -czvf release/${{ matrix.system.bin }}-${{ matrix.system.os }}-${{ steps.get_version.outputs.version }}.tar.gz -C release ${{ matrix.system.bin }}
 
       - name: Upload Binary to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: release/${{ matrix.system.bin }}-${{ matrix.system.os }}-${VERSION}.tar.gz
+          files: release/${{ matrix.system.bin }}-${{ matrix.system.os }}-${{ steps.get_version.outputs.version }}.tar.gz
