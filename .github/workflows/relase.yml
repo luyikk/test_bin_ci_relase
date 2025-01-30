@@ -19,8 +19,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-            persist-credentials: 'false'
       - name: Build Rust project in Docker
         run: |
             docker run --rm -v "$(pwd)":/workspace -w /workspace ${{ matrix.system.image }} /bin/bash -c "cargo build --release"
