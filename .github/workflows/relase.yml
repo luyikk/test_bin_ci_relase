@@ -26,9 +26,9 @@ jobs:
         run: |
           mkdir -p release
           cp target/release/${{ matrix.system.bin }} release/
-          tar -czvf release/${{ matrix.system.bin }}-${{ matrix.system.os }}.tar.gz -C release ${{ matrix.system.bin }}
+          tar -czvf release/${{ matrix.system.bin }}-${{ matrix.system.os }}-${{ github.ref#refs/tags/ }}.tar.gz -C release ${{ matrix.system.bin }}
 
       - name: Upload Binary to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: release/${{ matrix.system.bin }}-${{ matrix.system.os }}.tar.gz
+          files: release/${{ matrix.system.bin }}-${{ matrix.system.os }}-${{ github.ref#refs/tags/ }}.tar.gz
