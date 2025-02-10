@@ -18,11 +18,11 @@ fn version() -> &'static str {
 }
 
 fn main() {
-    let result = add(2, 2);
-    println!("2 + 2 = {}", result);
+    let result = add(4, 4);
+    println!("4 + 4 = {}", result);
 
-    let result = add(2, 3);
-    println!("2 + 3 = {}", result);
+    let result = add(5, 3);
+    println!("5 + 3 = {}", result);
 
     println!("{}", version());
 }
