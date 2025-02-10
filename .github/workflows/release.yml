@@ -12,10 +12,10 @@ jobs:
         system:
           - image: luyikk/rust1804
             os: ubuntu1804
-            bin: test_bin
+            bin: game_251
           - image: luyikk/rust_ubuntu
             os: ubuntu2204
-            bin: test_bin
+            bin: game_251
     steps:
       - name: Get version from tag using github-script
         id: get_version
