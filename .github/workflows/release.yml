@@ -39,6 +39,10 @@ jobs:
           COMMIT_HASH=$(git rev-list -n 1 $TAG)
           BRANCHES=$(git branch --contains $COMMIT_HASH)
           echo "::set-output name=branches::$BRANCHES"
+
+      - name: Output branches
+        run: |
+          echo "Branches: ${{ steps.get-branch.outputs.branches }}"
         
       - name: Build Rust project in Docker
         run: |
