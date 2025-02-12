@@ -28,21 +28,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Get branch from TAG
-        id: get-branch
+      - name: Get branch name
+        id: get_branch
         run: |
-          TAG=$(git describe --tags --exact-match 2>/dev/null)
-          if [ -z "$TAG" ]; then
-            echo "::error::No TAG found"
-            exit 1
-          fi
-          COMMIT_HASH=$(git rev-list -n 1 $TAG)
-          BRANCHES=$(git branch --contains $COMMIT_HASH)
-          echo "::set-output name=branches::$BRANCHES"
+          TAG_REF=$(git rev-parse --short HEAD)
+          BRANCH_NAME=$(git branch -r --contains $TAG_REF | grep -v '\->' | head -n 1 | sed 's/.*origin\///')
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
 
-      - name: Output branches
-        run: |
-          echo "Branches: ${{ steps.get-branch.outputs.branches }}"
+      - name: Display branch name
+        run: echo "Tag was created on branch ${{ env.branch_name }}"
         
       - name: Build Rust project in Docker
         run: |
